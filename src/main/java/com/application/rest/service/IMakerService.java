@@ -1,11 +1,11 @@
-package com.application.rest.persistence;
+package com.application.rest.service;
 
 import com.application.rest.entities.Maker;
 
 import java.util.List;
 import java.util.Optional;
 
-public interface IMakerDAO {
+public interface IMakerService {
 
     List<Maker> findAll();
 
