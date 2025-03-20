@@ -82,4 +82,18 @@ public class MakerController {
 
         return ResponseEntity.ok("Register updated");
     }
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<?> deleteById(@PathVariable Long id){
+
+        Optional<Maker> makerOptional = makerService.findById(id);
+
+        if(makerOptional.isEmpty()){
+            return ResponseEntity.badRequest().body("Register not found");
+        }
+
+        makerService.deleteById(id);
+
+        return ResponseEntity.ok("Register deleted");
+    }
 }
