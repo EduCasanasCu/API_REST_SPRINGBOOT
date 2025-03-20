@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -39,6 +40,26 @@ public class ProductController {
                 .build();
 
         return ResponseEntity.ok(productDTO);
+    }
+
+    @GetMapping("/findAll")
+    public ResponseEntity<?> findAll(){
+
+        List<Product> productList = productService.findAll();
+
+        if(productList.isEmpty()){
+            return ResponseEntity.badRequest().body("List is empty");
+        }
+
+        List<ProductDTO> productDTOList = productList
+                .stream()
+                .map(product -> ProductDTO.builder()
+                        .id(product.getId())
+                        .name(product.getName())
+                        .price(product.getPrice())
+                        .maker(product.getMaker())
+                        .build()).toList();
+        return ResponseEntity.ok(productDTOList);
     }
 
 }
