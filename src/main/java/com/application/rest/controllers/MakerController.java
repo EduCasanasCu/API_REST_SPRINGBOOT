@@ -6,11 +6,9 @@ import com.application.rest.entities.Maker;
 import com.application.rest.service.IMakerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 
@@ -55,5 +53,17 @@ public class MakerController {
                 .toList();
         return ResponseEntity.ok(makerList);
 
+    }
+    @PostMapping("/save")
+    public ResponseEntity<?> save(@RequestBody MakerDTO makerDTO){
+
+        if(makerDTO.getName().isBlank()){
+            return ResponseEntity.badRequest().body("Name is required");
+        }
+
+        makerService.save(Maker.builder()
+                .name(makerDTO.getName())
+                .build());
+        return ResponseEntity.created(URI.create("/api/maker/save")).build();
     }
 }
