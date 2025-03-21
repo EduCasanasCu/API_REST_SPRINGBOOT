@@ -79,6 +79,39 @@ public class ProductController {
 
     }
 
-    
+    @PutMapping("/update/{id}")
+    public ResponseEntity<?> update(@PathVariable Long id, @RequestBody ProductDTO productDTO){
+
+        Optional<Product> productOptional = productService.findById(id);
+
+        if(productOptional.isEmpty()){
+            return ResponseEntity.notFound().build();
+        }
+
+        Product product = productOptional.get();
+        product.setName(productDTO.getName());
+        product.setPrice(productDTO.getPrice());
+        product.setMaker(productDTO.getMaker());
+
+        productService.save(product);
+
+        return ResponseEntity.ok("Product updated");
+
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<?> deleteById(@PathVariable Long id){
+
+        Optional<Product> productOptional = productService.findById(id);
+
+        if(productOptional.isEmpty()){
+            return ResponseEntity.notFound().build();
+        }
+
+        productService.deleteById(id);
+        return ResponseEntity.ok("Product deleted");
+    }
+
+
 
 }
